@@ -31,6 +31,10 @@ cat2: ## run cat2
 	$(call gcc,chap06/cat2.c)
 	$(call exec,README.md .gitignore)
 
+head: ## run head
+	$(call gcc,chap06/head.c)
+	docker run --rm -w /work -v $(PWD):/work gcc $(BINARY_PATH) 10 chap06/head.c
+
 # https://postd.cc/auto-documented-makefile/
 help: ## Show help
 	@grep --no-filename -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-40s\033[0m %s\n", $$1, $$2}'
