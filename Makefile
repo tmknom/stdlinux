@@ -8,11 +8,16 @@ BASE_PATH = .
 BINARY_PATH = $(BASE_PATH)/bin/main
 
 define gcc
-	docker run --rm -w /work -v $(PWD):/work gcc gcc -Wall -O2 -o ./bin/main ${1}
+	docker run --rm -w /work -v $(PWD):/work debian:gcc gcc -Wall -O2 -o ./bin/main ${1}
 endef
 
 define exec
-	docker run --rm -w /work -v $(PWD):/work gcc $(BINARY_PATH) ${1}
+	docker run --rm -w /work -v $(PWD):/work debian:gcc $(BINARY_PATH) ${1}
+endef
+
+define debug
+	docker run --rm -w /work -v $(PWD):/work debian:gcc gcc -Wall -g -o ./bin/main ${1}
+	docker run -it --rm --cap-add=SYS_PTRACE --security-opt="seccomp=unconfined" -w /work -v $(PWD):/work debian:gcc /usr/bin/gdb ./bin/main
 endef
 
 # Phony Targets
@@ -21,7 +26,7 @@ clean: ## Clean
 	rm -f $(BINARY_PATH)
 
 run: ## docker run
-	docker run -it --rm --cap-add=SYS_PTRACE --security-opt="seccomp=unconfined" -w /work -v $(PWD):/work gcc /bin/bash || true
+	docker run -it --rm --cap-add=SYS_PTRACE --security-opt="seccomp=unconfined" -w /work -v $(PWD):/work debian:gcc /bin/bash || true
 
 cat: ## run cat
 	$(call gcc,chap05/cat.c)
@@ -33,7 +38,10 @@ cat2: ## run cat2
 
 head: ## run head
 	$(call gcc,chap06/head.c)
-	docker run --rm -w /work -v $(PWD):/work gcc $(BINARY_PATH) 10 chap06/head.c
+	$(call exec,-n 10 chap06/head.c)
+
+head-debug: ## debug head
+	$(call debug,chap06/head.c)
 
 # https://postd.cc/auto-documented-makefile/
 help: ## Show help
