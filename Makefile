@@ -80,6 +80,10 @@ stat: ## run stat
 	$(call gcc,chap10/stat.c)
 	$(call exec,chap10/stat.c)
 
+chmod: ## run chmod
+	$(call gcc,chap10/chmod.c)
+	$(call exec,777 chap10/chmod.c)
+
 # https://postd.cc/auto-documented-makefile/
 help: ## Show help
 	@grep --no-filename -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-40s\033[0m %s\n", $$1, $$2}'
