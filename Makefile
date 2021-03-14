@@ -63,6 +63,10 @@ ln: ## run ln
 	$(call gcc,chap10/ln.c)
 	$(call exec,chap10/ln.c chap10/another)
 
+symlink: ## run symlink
+	$(call gcc,chap10/symlink.c)
+	$(call exec,chap10/symlink.c chap10/another)
+
 # https://postd.cc/auto-documented-makefile/
 help: ## Show help
 	@grep --no-filename -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-40s\033[0m %s\n", $$1, $$2}'
