@@ -95,6 +95,12 @@ env: ## run env
 server: ## run server
 	docker run --rm -w /work -v $(PWD):/work debian:gcc gcc -Wall -O2 -c -o ./bin/main.o chap16/server.c
 
+server2: ## run server2
+	docker run --rm -w /work -v $(PWD):/work debian:gcc gcc -Wall -O2 -c -o ./bin/main.o chap17/server2.c
+
+docker: ## docker build
+	docker build -t debian:gcc docker/
+
 # https://postd.cc/auto-documented-makefile/
 help: ## Show help
 	@grep --no-filename -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-40s\033[0m %s\n", $$1, $$2}'
